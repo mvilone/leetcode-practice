@@ -1,7 +1,16 @@
 package math;
 
 public class PalindromeNumber {
-     public boolean isPalindrome(int x) {
+
+    /**
+     * Determines whether the given integer is a palindrome without converting it to a string.
+     * A palindrome number reads the same forward and backward (e.g., 121, 1221).
+     * Negative numbers and numbers ending in 0 (except 0 itself) are not palindromes.
+     *
+     * @param x the input integer to check
+     * @return true if x is a palindrome, false otherwise
+     */
+    public boolean isPalindrome(int x) {
         // 1. Return true if x is 0, since 0 is a palindrome
         if (x == 0) {
             return true;
@@ -32,5 +41,4 @@ public class PalindromeNumber {
         // 4. Return whether the reversed value equals the remaining part of x
         return reversed == x;
     }
-    
 }
