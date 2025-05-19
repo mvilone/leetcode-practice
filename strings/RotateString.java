@@ -1,6 +1,6 @@
 package strings;
 
-class RotateStrings {
+class RotateString {
 
     /**
      * Checks if one string is a rotation of another.
