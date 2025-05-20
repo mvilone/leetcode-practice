@@ -1,65 +1,70 @@
 package two_pointers;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * Finds all unique triplets in the array that sum to zero.
+ * Finds all unique triplets in the array that sum up to zero.
  *
- * <p>This implementation sorts the array and uses a two-pointer approach
- * to efficiently find combinations. It stores the triplets in a HashSet
- * to automatically handle duplicate triplets.</p>
+ * <p>This method uses a sorted array and two-pointer technique to efficiently find all
+ * valid combinations. Duplicate triplets are avoided by skipping repeated values
+ * during iteration.</p>
  *
  * @param nums the input array of integers
- * @return a list of unique triplets [nums[i], nums[j], nums[k]] such that i != j != k and their sum is 0
+ * @return a list of unique triplets where each triplet's elements sum to zero
  */
 class ThreeSum {
     public List<List<Integer>> threeSum(int[] nums) {
-        // Sort the array to enable two-pointer traversal
+        // Sort the array to simplify two-pointer traversal and duplicate detection
         Arrays.sort(nums);
 
-        // Use a HashSet to automatically filter out duplicate triplets
-        HashSet<List<Integer>> triplets = new HashSet<>();
+        List<List<Integer>> final_result = new ArrayList<>();
 
-        // Iterate through each element to use as the first number in the triplet
-        for (int i = 0; i < nums.length; i++) {
-            int n1 = nums[i];
-            int j = i + 1;                 // Start of second pointer
-            int k = nums.length - 1;       // Start of third pointer
+        // Iterate through each element, treating it as the first number of the triplet
+        for (int i = 0; i < nums.length - 2; i++) {
+            // Skip duplicate values for the first number to avoid repeated triplets
+            if (i > 0 && nums[i - 1] == nums[i]) {
+                continue;
+            }
 
-            // Use two-pointer technique to find valid triplets
-            while (j < k) {
-                int n2 = nums[j];
-                int n3 = nums[k];
-                int sum = n1 + n2 + n3;
+            int left = i + 1;                // Second pointer
+            int right = nums.length - 1;     // Third pointer
+
+            // Use two-pointer approach to find valid triplets
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
 
                 if (sum == 0) {
-                    // Found a valid triplet that sums to zero
-                    List<Integer> triplet = new ArrayList<>();
-                    triplet.add(n1);
-                    triplet.add(n2);
-                    triplet.add(n3);
-                    triplets.add(triplet);
+                    // Found a valid triplet
+                    ArrayList<Integer> temp = new ArrayList<>();
+                    temp.add(nums[i]);
+                    temp.add(nums[left]);
+                    temp.add(nums[right]);
+                    final_result.add(temp);
 
-                    // Move both pointers inward to continue search
-                    j += 1;
-                    k -= 1;
+                    // Skip over duplicates for the second number
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left += 1;
+                    }
+
+                    // Skip over duplicates for the third number
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right -= 1;
+                    }
+
+                    // Move both pointers inward after recording a valid triplet
+                    left += 1;
+                    right -= 1;
                 } else if (sum < 0) {
-                    // Sum is too small, move left pointer right to increase sum
-                    j += 1;
+                    // Sum is too small, move left pointer to increase it
+                    left += 1;
                 } else {
-                    // Sum is too large, move right pointer left to decrease sum
-                    k -= 1;
+                    // Sum is too large, move right pointer to decrease it
+                    right -= 1;
                 }
             }
         }
 
-        // Convert HashSet to List for the final result
-        List<List<Integer>> result = new ArrayList<>();
-        for (List<Integer> t : triplets) {
-            result.add(t);
-        }
-
-        return result;
+        return final_result;
     }
 }
-
